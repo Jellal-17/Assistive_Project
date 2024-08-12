@@ -1,0 +1,24 @@
+<launch>
+  <!-- startup simulated world -->
+  <include file="$(find my_turtlebot3)/launch/my_turtlebot3_gazebo.launch">
+    <arg name="x_pos" value="-3.0"/>
+    <arg name="y_pos" value="1.0"/>
+    <arg name="z_pos" value="0.0"/>
+  </include>
+
+  <!-- startup navigation -->
+  <include file="$(find my_turtlebot3)/launch/my_turtlebot3_navigation.launch">
+    <arg name="map_file" value="$(env HOME)/src/map.yaml"/>
+    <arg name="open_rviz" value="false"/>
+  </include>
+  
+  <!-- Start control node -->
+  <node pkg="sim" type="sim_nav_goals.py" name="sim_nav_goals" output="screen" respawn="true" />
+
+  <include file="$(find yolov5_ros)/launch/yolov5.launch">
+    <arg name="weights" value="yolov5s6.pt"/>
+    <arg name="input_image_topic" value="/camera/rgb/image_raw"/>
+    <arg name="publish_image" value="true"/>
+  </include> 
+
+</launch>
